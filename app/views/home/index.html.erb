@@ -1,0 +1,18 @@
+<script src="https://webrtchacks.github.io/adapter/adapter-latest.js"></script>
+<%= javascript_pack_tag 'home' %>
+
+<style>
+    video {
+        width: 400px
+    }
+</style>
+
+<h1>Mini WebRTC</h1>
+
+<p>
+  <button id='askForCameraPermission'>Get Camera</button>
+  <button id="sendOffer">Send Offer</button>
+</p>
+
+<video id="myVideo" autoplay></video>
+<video id = "remoteVideo" autoplay></video>
