@@ -1,7 +1,5 @@
 import consumer from "../channels/consumer"
 
-let myVideo;
-let remoteVideo;
 let peerConnection;
 const sessionId = Math.random().toString();
 const webrtcConfiguration = {
@@ -9,12 +7,8 @@ const webrtcConfiguration = {
 };
 
 const webrtcChannel = consumer.subscriptions.create({ "channel": "WebrtcChannel", "room": "video_call" }, {
-    connected() {
-    },
-
-    disconnected() {
-    },
-
+    connected() { },
+    disconnected() { },
     received(data) {
         if ( data.sessionId === sessionId) { return }
         switch(data.event) {
@@ -33,35 +27,37 @@ const webrtcChannel = consumer.subscriptions.create({ "channel": "WebrtcChannel"
     }
 });
 
+function handleCandidate(candidate) {
+    peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+}
+
+function handleAnswer(answer) {
+    peerConnection.setRemoteDescription(new RTCSessionDescription(answer))
+};
+
+function handleOffer(offer) {
+    peerConnection.setRemoteDescription(new RTCSessionDescription(offer))
+    peerConnection.createAnswer((answer) => {
+        peerConnection.setLocalDescription(answer);
+        webrtcChannel.send({ event: 'answer', answer: answer, sessionId: sessionId });
+    }, (error) => alert("Error when creating an answer"));
+};
+
 function getStreamHandler(stream) {
-    myVideo.srcObject = stream;
+    document.getElementById('myVideo').srcObject = stream
+    createConnection(stream);
+}
+
+function createConnection(stream) {
     peerConnection = new RTCPeerConnection(webrtcConfiguration);
     peerConnection.addStream(stream);
-    peerConnection.onaddstream = (e) => remoteVideo.srcObject = stream
+    peerConnection.onaddstream = (e) => document.getElementById('remoteVideo').srcObject = e.stream
     peerConnection.onicecandidate =  (event) => {
         if (event.candidate) {
             webrtcChannel.send({ event: 'candidate', candidate: event.candidate, sessionId: sessionId })
         }
     };
 }
-
-//when we got an ice candidate from a remote user
-function handleCandidate(candidate) {
-    peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
-}
-
-//when we got an answer from a remote user
-function handleAnswer(answer) {
-    peerConnection.setRemoteDescription(new RTCSessionDescription(answer))
-};
-
-function handleOffer(offer) {
-        peerConnection.setRemoteDescription(new RTCSessionDescription(offer))
-        peerConnection.createAnswer((answer) => {
-            peerConnection.setLocalDescription(answer);
-            webrtcChannel.send({ event: 'answer', answer: answer, sessionId: sessionId });
-        }, (error) => alert("Error when creating an answer"));
-};
 
 function sendOffer() {
     peerConnection.createOffer((offer) => {
@@ -71,12 +67,8 @@ function sendOffer() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    myVideo = document.getElementById('myVideo');
-    remoteVideo = document.getElementById('remoteVideo');
-
     document.getElementById('askForCameraPermission').onclick = () => {
         navigator.getUserMedia({ video: true, audio: false }, getStreamHandler, (error) => {});
     }
-
     document.getElementById('sendOffer').onclick = sendOffer
 });

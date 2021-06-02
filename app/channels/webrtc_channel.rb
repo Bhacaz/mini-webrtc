@@ -1,10 +1,6 @@
 class WebrtcChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "video_call"
-  end
-
-  def unsubscribed
-    # Any cleanup needed when channel is unsubscribed
+    stream_from 'video_call'
   end
 
   def receive(data)
