@@ -1,26 +1,13 @@
-# README
+# mini-webrtc
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Small Rails app to try WebRTC video call with ActionCable
 
-Things you may want to cover:
+## Setup
 
-* Ruby version
+```
+bundle install
+bundle exec rails s
+```
 
-* System dependencies
+Go to http://localhost:3000
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-* `rails new mini-webrtc --skip-action-mailer --skip-action-mailbox --skip-action-text --skip-active-record --skip-active-job --skip-active-storage --skip-spring --skip-jbuilder -T`
