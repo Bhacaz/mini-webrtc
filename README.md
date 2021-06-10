@@ -12,3 +12,8 @@ bundle exec rails server
 
 Go to http://localhost:3000
 
+## Important files
+
+* [app/views/home/index.html.erb](https://github.com/Bhacaz/mini-webrtc/blob/main/app/views/home/index.html.erb)
+* [app/javascript/packs/home.js](https://github.com/Bhacaz/mini-webrtc/blob/main/app/javascript/packs/home.js)
+
