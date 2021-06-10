@@ -6,7 +6,8 @@ Small Rails app to try WebRTC video call with ActionCable
 
 ```
 bundle install
-bundle exec rails s
+yarn install
+bundle exec rails server
 ```
 
 Go to http://localhost:3000
