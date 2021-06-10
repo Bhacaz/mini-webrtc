@@ -10,7 +10,7 @@ yarn install
 bundle exec rails server
 ```
 
-Go to http://localhost:3000
+Open http://localhost:3000 two times, (incognito, 2 browsers)
 
 ## Important files
 
